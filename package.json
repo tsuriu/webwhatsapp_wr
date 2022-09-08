@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp_wrapper",
+  "version": "1.0.0",
+  "description": "Wrapper for whatsapp web. (microservice).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "nodemon index.js"
+  },
+  "author": "Tulio Amancio (tsuriu)",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.2",
+    "qrcode": "^1.5.1",
+    "whatsapp-web.js": "^1.17.1",
+    "winston": "^3.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
