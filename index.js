@@ -16,7 +16,7 @@ wcli.on('loading_screen', (percent, message) => {
 wcli.on('qr', (qr) => {
     if((process.env.QR_VAR && process.env.QR_VAR !== qr) || (!process.env.QR_VAR)) { 
         process.env.QR_VAR = qr
-        queue.sendToQueue("omni.cfg.auth", {time: new Date().valueOf(), channel: "whatsapp_wr", data: qr});
+        queue.sendToQueue(process.env.WWWR_CONFIG_AUTH, {time: new Date().valueOf(), channel: "whatsapp_wr", data: qr});
     }
 });
 
@@ -25,7 +25,7 @@ wcli.on('authenticated', () => {
 });
 
 wcli.on('disconnected', () => {
-    queue.sendToQueue("omni.cfg.events", {time: new Date().valueOf(), channel: "whatsapp_wr", event: "disconnection"});
+    queue.sendToQueue(process.env.WWWR_CONFIG_EVENTS, {time: new Date().valueOf(), channel: "whatsapp_wr", event: "disconnection"});
 });
 
 wcli.on('auth_failure', msg => {
@@ -38,15 +38,15 @@ wcli.on('ready', () => {
 });
 
 wcli.on('message', async message => {
-    message.service = "whatsapp_scrapper"
+    message.service = process.env.WWWR_PREFIX
     try {
-        queue.sendToQueue("omni.from.ext", message);
+        queue.sendToQueue(process.env.WWWR_WWWR_MESSAGE_IN_QUEUE, message);
     } catch (error) {
         logger.log('error', error);
     }
 });
 
-queue.consume("omni.whatsapp_wr.to.ext", message => {
+queue.consume(process.env.WWWR_WWWR_MESSAGE_IN_QUEUE, message => {
     try {
         const {number, msg} = JSON.parse(message.content.toString());
         const ret = wcli.sendMessage(number, msg);

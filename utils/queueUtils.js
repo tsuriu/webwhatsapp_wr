@@ -1,8 +1,8 @@
 function amqpuri(){
-  const amqp_user = process.env.AMPQ_USER || "admin";
-  const amqp_secret = process.env.AMPQ_SECCRET || "admin";
-  const amqp_host = process.env.AMPQ_HOST || "localhost";
-  const amqp_port = process.env.AMPQ_PORT || "5672";
+  const amqp_user = process.env.RABBITMQ_DEFAULT_USER || "admin";
+  const amqp_secret = process.env.RABBITMQ_DEFAULT_PASS || "admin";
+  const amqp_host = process.env.RABBITMQ_DEFAULT_HOST || "localhost";
+  const amqp_port = process.env.RABBITMQ_DEFAULT_PORT || "5672";
 
   return `amqp://${amqp_user}:${amqp_secret}@${amqp_host}:${amqp_port}`
 }
