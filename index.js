@@ -16,16 +16,17 @@ wcli.on('loading_screen', (percent, message) => {
 wcli.on('qr', (qr) => {
     if((process.env.QR_VAR && process.env.QR_VAR !== qr) || (!process.env.QR_VAR)) { 
         process.env.QR_VAR = qr
-        queue.sendToQueue(process.env.WWWR_CONFIG_AUTH, {time: new Date().valueOf(), channel: "whatsapp_wr", data: qr});
+        queue.sendToQueue(process.env.WWWR_CONFIG_AUTH, {time: new Date().valueOf(), channel_service: process.env.WWWR_PREFIX, data: qr});
     }
 });
 
 wcli.on('authenticated', () => {
     logger.log('info', "AUTHENTICATED");
+    queue.sendToQueue(process.env.WWWR_CONFIG_EVENTS, {time: new Date().valueOf(), channel_service: process.env.WWWR_PREFIX, event: "AUTHENTICATED"});
 });
 
 wcli.on('disconnected', () => {
-    queue.sendToQueue(process.env.WWWR_CONFIG_EVENTS, {time: new Date().valueOf(), channel: "whatsapp_wr", event: "disconnection"});
+    queue.sendToQueue(process.env.WWWR_CONFIG_EVENTS, {time: new Date().valueOf(), channel_service: process.env.WWWR_PREFIX, event: "DISCONNECTED"});
 });
 
 wcli.on('auth_failure', msg => {
@@ -35,6 +36,7 @@ wcli.on('auth_failure', msg => {
 wcli.on('ready', () => {
     logger.log('info', "ready");
     if(process.env.QR_VAR) {delete process.env.QR_VAR}
+    queue.sendToQueue(process.env.WWWR_CONFIG_EVENTS, {time: new Date().valueOf(), channel_service: process.env.WWWR_PREFIX, event: "READY"});
 });
 
 wcli.on('message', async message => {
